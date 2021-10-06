@@ -12,7 +12,7 @@ class CoreDataStorageManger {
     static let shared = CoreDataStorageManger()
     private init() {}
     
-    // MARK: - Core Data stack
+    // MARK: - Private properties
     private var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CoreDataDemo")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -37,15 +37,18 @@ class CoreDataStorageManger {
         }
     }
     
+    
+    // MARK: - CRUD
+    
     func createNewTaskEntity(description: String) -> Task? {
         guard let entityDescription = NSEntityDescription.entity(
             forEntityName: "Task",
-            in: persistentContainer.viewContext
+            in: context
         ) else { return nil }
         
         guard let task = NSManagedObject(
             entity: entityDescription,
-            insertInto: persistentContainer.viewContext
+            insertInto: context
         ) as? Task else { return nil }
         
         task.title = description
@@ -53,12 +56,29 @@ class CoreDataStorageManger {
         return task
     }
     
+    func fetchAllTasks() -> [Task]? {
+        let fetchRequest = Task.fetchRequest()
+        
+        do {
+            let taskList = try context.fetch(fetchRequest)
+            return taskList
+        } catch let error {
+            print("Failed to fetch data", error)
+            return nil
+        }
+    }
+    
     func updateInfoFor(_ task: Task, with text: String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Task")
+        
+        let fetchRequest = Task.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title = %@", task.title!)
         
         do {
-            guard let task = try context.fetch(fetchRequest).first as? Task else { return }
+            guard let task = try context.fetch(fetchRequest).first else {
+                print("Couldn't find a task with provided title.")
+                return
+            }
+
             task.setValue(text, forKey: "title")
             saveContext()
         }
@@ -72,16 +92,4 @@ class CoreDataStorageManger {
         saveContext()
     }
     
-    func fetchAllTasks() -> [Task]? {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            let taskList = try context.fetch(fetchRequest)
-            return taskList
-        } catch let error {
-            
-            print("Failed to fetch data", error)
-            return nil
-        }
-    }
 }
