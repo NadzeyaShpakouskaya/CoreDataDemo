@@ -27,7 +27,7 @@ class TaskListViewController: UITableViewController {
         fetchData()
     }
     
-        // MARK: - Private Methods
+    // MARK: - Private Methods
     private func setupNavigationBar() {
         title = "Task List"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -56,37 +56,38 @@ class TaskListViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        showAlert(with: "New Task", and: "What do you want to do?")
+        showTaskAlert(with: "New Task", and: "New task description")
     }
     
-    private func showAlert(with title: String, and message: String, and text: String? = nil) {
+    private func showTaskAlert(with title: String, and message: String, isEditing: Bool = false) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-        if text != nil {
+        if isEditing {
+            guard let index = tableView.indexPathForSelectedRow?.row else { return }
+            alert.addTextField { textField in
+                textField.text = self.taskList[index].title
+            }
+            
             let updateAction = UIAlertAction(title: "Update", style: .default) { _ in
-                guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-                guard let index = self.tableView.indexPathForSelectedRow?.row else { return }
-                self.update(task: self.taskList[index], with: task)
+                guard let text = alert.textFields?.first?.text, !text.isEmpty else { return }
+                self.update(task: self.taskList[index], with: text)
             }
             alert.addAction(updateAction)
         } else {
+            alert.addTextField { textField in textField.placeholder = "New Task" }
             let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
                 guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
                 self.save(task)
             }
             alert.addAction(saveAction)
         }
-        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.text = text != nil ? text : ""
-            textField.placeholder = "New Task"
-        }
         present(alert, animated: true)
     }
     
 }
-    // MARK: - CRUD Data Manager
+
+// MARK: - CRUD Tasks
 extension TaskListViewController {
     private func fetchData() {
         guard let tasks = dataManager.fetchAllTasks() else { return }
@@ -132,15 +133,14 @@ extension TaskListViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let task = taskList[indexPath.row]
-            delete(task, at: indexPath)
+            delete(taskList[indexPath.row], at: indexPath)
         }
         
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let task = taskList[indexPath.row]
-        showAlert(with: "Update task", and: "New task description", and: task.title)
+        showTaskAlert(with: "Update Task", and: "New task description", isEditing: true)
     }
+    
     
 }
 
