@@ -12,6 +12,7 @@
 		A8969B25270B6C6D00F7DED0 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A8969B23270B6C6D00F7DED0 /* CoreDataDemo.xcdatamodeld */; };
 		A8969B27270B6C7300F7DED0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8969B26270B6C7300F7DED0 /* Assets.xcassets */; };
 		A8969B2A270B6C7300F7DED0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8969B28270B6C7300F7DED0 /* LaunchScreen.storyboard */; };
+		FDF749D5270D6F7D008E6B22 /* CoreDataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF749D4270D6F7D008E6B22 /* CoreDataStorageManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		A8969B26270B6C7300F7DED0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8969B29270B6C7300F7DED0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8969B2B270B6C7300F7DED0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FDF749D4270D6F7D008E6B22 /* CoreDataStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +56,12 @@
 		A8969B19270B6C6D00F7DED0 /* CoreDataDemo */ = {
 			isa = PBXGroup;
 			children = (
-				FDF749D0270D6DA7008E6B22 /* App */,
+				FDF749D6270D6F93008E6B22 /* Services */,
 				FDF749D1270D6DBB008E6B22 /* ViewControllers */,
 				A8969B26270B6C7300F7DED0 /* Assets.xcassets */,
-				FDF749D2270D6DD9008E6B22 /* Storyboards */,
 				FDF749D3270D6DED008E6B22 /* CoreData */,
+				FDF749D0270D6DA7008E6B22 /* App */,
+				FDF749D2270D6DD9008E6B22 /* Storyboards */,
 			);
 			path = CoreDataDemo;
 			sourceTree = "<group>";
@@ -94,6 +97,14 @@
 				A8969B23270B6C6D00F7DED0 /* CoreDataDemo.xcdatamodeld */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		FDF749D6270D6F93008E6B22 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FDF749D4270D6F7D008E6B22 /* CoreDataStorageManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +179,7 @@
 			files = (
 				A8969B1F270B6C6D00F7DED0 /* TaskListViewController.swift in Sources */,
 				A8969B25270B6C6D00F7DED0 /* CoreDataDemo.xcdatamodeld in Sources */,
+				FDF749D5270D6F7D008E6B22 /* CoreDataStorageManager.swift in Sources */,
 				A8969B1B270B6C6D00F7DED0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

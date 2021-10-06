@@ -6,17 +6,19 @@
 //
 
 import UIKit
-import CoreData
 
 protocol TaskViewControllerDelegate {
     func reloadData()
 }
 
 class TaskListViewController: UITableViewController {
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    private let dataManager = CoreDataStorageManger.shared
+    private let context = CoreDataStorageManger.shared.persistentContainer.viewContext
+    
     private let cellID = "task"
     private var taskList: [Task] = []
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -24,7 +26,7 @@ class TaskListViewController: UITableViewController {
         setupNavigationBar()
         fetchData()
     }
-
+    
     private func setupNavigationBar() {
         title = "Task List"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -82,9 +84,7 @@ class TaskListViewController: UITableViewController {
     }
     
     private func save(_ taskName: String) {
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
-        guard let task = NSManagedObject(entity: entityDescription, insertInto: context) as? Task else { return }
-        task.title = taskName
+        guard let task = dataManager.createNewTaskEntity(description: taskName) else { return }
         taskList.append(task)
         
         let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
