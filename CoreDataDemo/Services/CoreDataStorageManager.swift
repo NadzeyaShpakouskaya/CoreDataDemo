@@ -38,8 +38,11 @@ class CoreDataStorageManger {
     }
     
     func createNewTaskEntity(description: String) -> Task? {
-        guard let entityDescription = NSEntityDescription
-                .entity(forEntityName: "Task", in: persistentContainer.viewContext) else { return nil }
+        guard let entityDescription = NSEntityDescription.entity(
+                    forEntityName: "Task",
+                    in: persistentContainer.viewContext
+                ) else { return nil }
+        
         guard let task = NSManagedObject(
             entity: entityDescription,
             insertInto: persistentContainer.viewContext
